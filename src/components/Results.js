@@ -18,7 +18,6 @@ const StyledSearchBarWrapper = styled.div`
   top:0;
   background-color:white;
 `
-//https://api.unsplash.com/search/photos?query=london&client_id=2CIGTbb0j0WvgJ_TI2k0fGeJ-YjtmTAthvAwgX4ytZE
 export default function Results() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,14 +36,14 @@ export default function Results() {
       try {
         const response = await axios(options);
         if (response && response.data) {
-          setData(data => data.concat(
+          setData(
             response.data.results.map(item => ({
               id: item.id,
               image: item.urls.regular,
               location: item.user.location,
               username: item.user.name,
               modalImage: item.urls.small,
-            }))),
+            })),
           )
           setIsLoading(false);
         }
@@ -52,26 +51,8 @@ export default function Results() {
         setIsError(true);
       }
     };
-    if (isBottom) {
-      fetchData();
-      setPageNumber(pageNumber + 1)
-      setIsBottom(false);
-    }
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [slug, isBottom]);
-
-  function handleScroll() {
-    const scrollTop = (document.documentElement
-      && document.documentElement.scrollTop)
-      || document.body.scrollTop;
-    const scrollHeight = (document.documentElement
-      && document.documentElement.scrollHeight)
-      || document.body.scrollHeight;
-    if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
-      setIsBottom(true);
-    }
-  }
+    fetchData();
+  }, [slug]);
 
   return (
     <>
