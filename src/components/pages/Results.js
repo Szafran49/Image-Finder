@@ -4,6 +4,7 @@ import axios from 'axios'
 import styled from 'styled-components'
 import SearchBar from "../SearchBar"
 import Image from '../Image'
+
 const StyledImageContainer = styled.div`
   column-count: 3;
 `
@@ -23,9 +24,9 @@ export default function Results() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [isBottom, setIsBottom] = useState(false);
-  const { slug } = useParams();
+  const [isBottom, setIsBottom] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
+  const { slug } = useParams();
   useEffect(() => {
     const options = {
       url: `https://api.unsplash.com/search/photos?query=${slug}&page=${pageNumber}&client_id=2CIGTbb0j0WvgJ_TI2k0fGeJ-YjtmTAthvAwgX4ytZE`,
@@ -37,25 +38,43 @@ export default function Results() {
       try {
         const response = await axios(options);
         if (response && response.data) {
-          // use prev, which is the up-to-date state value
-          setData(
+          setData(data => data.concat(
             response.data.results.map(item => ({
               id: item.id,
               image: item.urls.regular,
               location: item.user.location,
               username: item.user.name,
               modalImage: item.urls.small,
-            })),
+            }))),
           )
           setIsLoading(false);
         }
-        console.log(data)
       } catch (error) {
         setIsError(true);
       }
     };
-    fetchData();
-  }, [slug]);
+    if (isBottom) {
+      console.log(data);
+      fetchData();
+      setPageNumber(pageNumber + 1)
+      setIsBottom(false);
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [slug, isBottom]);
+
+  function handleScroll() {
+    const scrollTop = (document.documentElement
+      && document.documentElement.scrollTop)
+      || document.body.scrollTop;
+    const scrollHeight = (document.documentElement
+      && document.documentElement.scrollHeight)
+      || document.body.scrollHeight;
+    if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
+      setIsBottom(true);
+    }
+  }
+
 
   return (
     <>
@@ -65,10 +84,17 @@ export default function Results() {
       <StyledImageContainer>
         {isLoading ? ('') : (
           data.map(item => (
-            <StyledAvoidBreaker >
-              <Image image={item.image} location={item.location} id={item.id} username={item.username} modalImage={item.modalImage} />
+            <StyledAvoidBreaker key={item.id}>
+              <Image
+                image={item.image}
+                location={item.location}
+                id={item.id}
+                username={item.username}
+                modalImage={item.modalImage} />
             </StyledAvoidBreaker>)
           ))}
+
+
       </StyledImageContainer>
       {
         data.total === 0 ?

@@ -6,12 +6,8 @@ const StyledWrapper = styled.div`
     background-color:red;
 `
 
-const StyledBackground = styled.div`
-    
-`
 
 export default function HomeLayout({ children }) {
-
     return <StyledWrapper> {children}
     </StyledWrapper>
 }
