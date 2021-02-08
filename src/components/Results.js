@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from 'axios'
 import styled from 'styled-components'
-import SearchBar from "../SearchBar"
-import Image from '../Image'
+import SearchBar from "./SearchBar"
+import Image from './Image'
 
 const StyledImageContainer = styled.div`
   column-count: 3;
@@ -17,7 +17,6 @@ const StyledSearchBarWrapper = styled.div`
   position: sticky;
   top:0;
   background-color:white;
-
 `
 //https://api.unsplash.com/search/photos?query=london&client_id=2CIGTbb0j0WvgJ_TI2k0fGeJ-YjtmTAthvAwgX4ytZE
 export default function Results() {
@@ -54,7 +53,6 @@ export default function Results() {
       }
     };
     if (isBottom) {
-      console.log(data);
       fetchData();
       setPageNumber(pageNumber + 1)
       setIsBottom(false);
@@ -75,7 +73,6 @@ export default function Results() {
     }
   }
 
-
   return (
     <>
       <StyledSearchBarWrapper>
@@ -93,8 +90,6 @@ export default function Results() {
                 modalImage={item.modalImage} />
             </StyledAvoidBreaker>)
           ))}
-
-
       </StyledImageContainer>
       {
         data.total === 0 ?

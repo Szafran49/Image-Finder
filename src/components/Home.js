@@ -1,4 +1,4 @@
-import SearchBar from "../SearchBar";
+import SearchBar from "./SearchBar";
 import HomeLayout from "@material-ui/core/Container";
 
 export default function Home() {
