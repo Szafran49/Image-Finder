@@ -2,22 +2,25 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from 'axios'
 import styled from 'styled-components'
-import SearchBar from "./SearchBar"
-import Image from './Image'
+import SearchBar from "../../shared/SearchBar"
+import Image from '../../shared/Image'
 
 const StyledImageContainer = styled.div`
   column-count: 3;
 `
+
 const StyledAvoidBreaker = styled.div`
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
   break-inside: avoid;
 `
+
 const StyledSearchBarWrapper = styled.div`
   position: sticky;
   top:0;
   background-color:white;
 `
+
 export default function Results() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

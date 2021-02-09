@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { makeStyles } from '@material-ui/styles'
 import ListBoxComponent from './ListBoxComponent'
 import { useNavigate } from 'react-router-dom'
-import { tags } from './tags'
+import { tags } from '../data/tags'
 import styled from 'styled-components'
 
 const StyledWrapper = styled.div`
@@ -15,14 +15,14 @@ const StyledWrapper = styled.div`
   align-items: center;
   justify: center;
   margin:auto;
-  width: 50vw;
-  height:7vh;
+  width: 30vw;
   left: 0;
   right: 0;
 `
 const useStyles = makeStyles(() => ({
   input: {
-    flexGrow: 1,
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
   },
 }));
 
@@ -52,13 +52,13 @@ export default function SearchBar() {
         popupIcon={false}
         closeIcon={false}
         onInputChange={(e, val) => setValue(val)}
-        noOptionsText={"Brak pasujących tagów"}
+        noOptionsText={"No matching tags"}
         size="small"
         renderInput={(params) => (
           <TextField
             {...params}
-
-            label="Szukaj"
+            className={classes.input}
+            label="Search for images..."
             margin="normal"
             variant="outlined"
             InputProps={{ ...params.InputProps, type: "search" }}
